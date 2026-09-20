@@ -21,11 +21,11 @@ func _ready():
 	var dragon_scene = preload("res://scenes/dragon.tscn")
 	
 	# Calcular altura inicial segura sobre el valle
-	var start_y1 = 45.0
-	var start_y2 = 45.0
+	var start_y1 = 80.0
+	var start_y2 = 80.0
 	if world_node.has_method("get_height"):
-		start_y1 = world_node.get_height(0.0, 0.0) + 20.0
-		start_y2 = world_node.get_height(22.0, 15.0) + 20.0
+		start_y1 = world_node.get_height(0.0, 0.0) + 50.0
+		start_y2 = world_node.get_height(22.0, 15.0) + 50.0
 	
 	dragon_p1 = dragon_scene.instantiate()
 	dragon_p1.player_id = 1

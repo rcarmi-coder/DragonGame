@@ -1,12 +1,12 @@
 shader_type spatial;
 render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
 
-uniform vec4 snow_color : source_color = vec4(0.95, 0.97, 1.0, 1.0);
-uniform vec4 rock_color : source_color = vec4(0.24, 0.23, 0.22, 1.0);
-uniform vec4 grass_color : source_color = vec4(0.19, 0.38, 0.15, 1.0);
+uniform vec4 snow_color : source_color = vec4(0.96, 0.98, 1.0, 1.0);
+uniform vec4 rock_color : source_color = vec4(0.26, 0.25, 0.24, 1.0);
+uniform vec4 grass_color : source_color = vec4(0.16, 0.27, 0.12, 1.0);
 uniform vec4 dark_soil_color : source_color = vec4(0.14, 0.12, 0.10, 1.0);
-uniform float snow_height_threshold = 150.0;
-uniform float snow_slope_threshold = 0.55;
+uniform float snow_height_threshold = 135.0;
+uniform float snow_slope_threshold = 0.52;
 
 float hash(vec2 p) {
     return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);

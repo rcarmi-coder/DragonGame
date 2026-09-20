@@ -161,29 +161,30 @@ func generate_dense_multimesh_forest(rng: RandomNumberGenerator):
 	var multimesh_inst = MultiMeshInstance3D.new()
 	var multimesh = MultiMesh.new()
 	multimesh.transform_format = MultiMesh.TRANSFORM_3D
-	multimesh.instance_count = 800
+	multimesh.instance_count = 1400
 	
-	# Mesh del pino cónico
+	# Mesh del pino cónico con proporciones de conífera realista (Fotos 1 y 2)
 	var cone = CylinderMesh.new()
 	cone.top_radius = 0.05
-	cone.bottom_radius = 3.5
-	cone.height = 14.0
+	cone.bottom_radius = 3.2
+	cone.height = 13.0
 	var pine_mat = StandardMaterial3D.new()
-	pine_mat.albedo_color = Color(0.12, 0.26, 0.10, 1.0)
-	pine_mat.roughness = 0.85
+	pine_mat.albedo_color = Color(0.10, 0.22, 0.09, 1.0) # Coníferas verde oscuro perenne
+	pine_mat.roughness = 0.88
 	cone.material = pine_mat
 	multimesh.mesh = cone
 	
 	var valid_idx = 0
-	for i in range(800):
-		var x = rng.randf_range(-1400.0, 1400.0)
-		var z = rng.randf_range(-1400.0, 1400.0)
+	for i in range(1400):
+		var x = rng.randf_range(-1500.0, 1500.0)
+		var z = rng.randf_range(-1500.0, 1500.0)
 		var y = get_height(x, z)
-		if y < 130.0:
+		# Crecen en valles y laderas de colinas (< 130m)
+		if y < 130.0 and y > 15.0:
 			var t = Transform3D()
-			var s = rng.randf_range(0.9, 1.6)
+			var s = rng.randf_range(0.85, 1.55)
 			t = t.scaled(Vector3(s, s, s))
-			t.origin = Vector3(x, y + 7.0 * s, z)
+			t.origin = Vector3(x, y + 6.5 * s, z)
 			multimesh.set_instance_transform(valid_idx, t)
 			valid_idx += 1
 			
