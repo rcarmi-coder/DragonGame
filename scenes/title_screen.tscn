@@ -1,0 +1,147 @@
+[gd_scene load_steps=5 format=3 uid="uid://ctitle01scene"]
+
+[ext_resource type="Script" path="res://scripts/title_screen.gd" id="1_title"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_overlay"]
+bg_color = Color(0.04, 0.06, 0.1, 0.82)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.85, 0.65, 0.25, 0.85)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
+bg_color = Color(0.85, 0.25, 0.15, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_sec"]
+bg_color = Color(0.18, 0.25, 0.38, 0.85)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="TitleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_title")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -340.0
+offset_top = -260.0
+offset_right = 340.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_overlay")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 25.0
+offset_right = -30.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.35, 1)
+theme_override_colors/font_shadow_color = Color(0.8, 0.2, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 40
+text = "DRAGON FURY"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 1, 0.9)
+theme_override_font_sizes/font_size = 14
+text = "SIMULADOR ÉPICO DE DRAGONES ANCESTRALES"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="ElemHeader" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "SELECCIONA TU ELEMENTO INICIAL:"
+horizontal_alignment = 1
+
+[node name="ElementSelection" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 10
+
+[node name="BtnFire" type="Button" parent="Panel/VBoxContainer/ElementSelection"]
+layout_mode = 2
+text = "🔥 Fuego"
+
+[node name="BtnIce" type="Button" parent="Panel/VBoxContainer/ElementSelection"]
+layout_mode = 2
+text = "❄️ Hielo"
+
+[node name="BtnWater" type="Button" parent="Panel/VBoxContainer/ElementSelection"]
+layout_mode = 2
+text = "💧 Agua"
+
+[node name="BtnPlants" type="Button" parent="Panel/VBoxContainer/ElementSelection"]
+layout_mode = 2
+text = "🌿 Planta"
+
+[node name="BtnAir" type="Button" parent="Panel/VBoxContainer/ElementSelection"]
+layout_mode = 2
+text = "💨 Aire"
+
+[node name="BtnMultiplayer" type="Button" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_sec")
+text = "MODO MULTIJUGADOR: DESACTIVADO (1P)"
+
+[node name="BtnStart" type="Button" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "¡INICIAR VUELO ANCESTRAL!"
+
+[node name="ControlsGuide" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.8, 0.9, 0.85)
+theme_override_font_sizes/font_size = 12
+text = "Volar: W/R2 | Frenar/Curvar Alas: S/L2 | Aleteo/Despegue: Espacio/X
+Disparo: Click Izq/R1 | 5 Elementos: Teclas 1 a 5 | 2P Split: Tecla M"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="Panel/VBoxContainer/ElementSelection/BtnFire" to="." method="_on_btn_fire_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/ElementSelection/BtnIce" to="." method="_on_btn_ice_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/ElementSelection/BtnWater" to="." method="_on_btn_water_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/ElementSelection/BtnPlants" to="." method="_on_btn_plants_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/ElementSelection/BtnAir" to="." method="_on_btn_air_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/BtnMultiplayer" to="." method="_on_btn_multiplayer_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/BtnStart" to="." method="_on_btn_start_pressed"]

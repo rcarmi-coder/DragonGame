@@ -56,6 +56,7 @@ p1_elem_fire={"deadzone": 0.2, "events": [Object(InputEventKey,"keycode":49), Ob
 p1_elem_ice={"deadzone": 0.2, "events": [Object(InputEventKey,"keycode":50), Object(InputEventJoypadButton,"button_index":14)]}
 p1_elem_water={"deadzone": 0.2, "events": [Object(InputEventKey,"keycode":51), Object(InputEventJoypadButton,"button_index":13)]}
 p1_elem_plants={"deadzone": 0.2, "events": [Object(InputEventKey,"keycode":52), Object(InputEventJoypadButton,"button_index":12)]}
+p1_elem_air={"deadzone": 0.2, "events": [Object(InputEventKey,"keycode":53)]}
 
 ; --- JUGADOR 2 (Mando 2 o Teclado Flechas/IJKL) ---
 p2_up={"deadzone": 0.2, "events": [Object(InputEventKey,"keycode":4194320), Object(InputEventJoypadMotion,"device":1,"axis":1,"axis_value":-1.0)]}
@@ -74,5 +75,6 @@ p2_elem_fire={"deadzone": 0.2, "events": [Object(InputEventKey,"keycode":55), Ob
 p2_elem_ice={"deadzone": 0.2, "events": [Object(InputEventKey,"keycode":56), Object(InputEventJoypadButton,"device":1,"button_index":14)]}
 p2_elem_water={"deadzone": 0.2, "events": [Object(InputEventKey,"keycode":57), Object(InputEventJoypadButton,"device":1,"button_index":13)]}
 p2_elem_plants={"deadzone": 0.2, "events": [Object(InputEventKey,"keycode":48), Object(InputEventJoypadButton,"device":1,"button_index":12)]}
+p2_elem_air={"deadzone": 0.2, "events": [Object(InputEventKey,"keycode":54)]}
 
 toggle_split_screen={"deadzone": 0.2, "events": [Object(InputEventKey,"keycode":77), Object(InputEventKey,"keycode":4194306), Object(InputEventJoypadButton,"button_index":8)]}
