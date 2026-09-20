@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://c6fyr3dragon01"]
+
+[ext_resource type="Script" path="res://scripts/dragon.gd" id="1_dragon"]
+[ext_resource type="PackedScene" path="res://models/sculpted_dragon.glb" id="2_sculpted"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dragon"]
+radius = 2.5
+height = 10.0
+
+[node name="Dragon" type="CharacterBody3D" groups=["player_dragons"]]
+script = ExtResource("1_dragon")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_dragon")
+
+[node name="SculptedModel" parent="." instance=ExtResource("2_sculpted")]
+transform = Transform3D(-0.65, 0, 0, 0, 0.65, 0, 0, 0, -0.65, 0, -1.2, 0)
+
+[node name="MouthMarker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -6.5)
+
+[node name="EvolutionLight" type="OmniLight3D" parent="."]
+light_color = Color(1, 0.85, 0.45, 1)
+light_energy = 0.0
+omni_range = 40.0

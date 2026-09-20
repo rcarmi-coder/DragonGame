@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://cbeyepbr01"]
+
+[ext_resource type="Texture2D" path="res://textures/dragon_eye.jpg" id="1_eye"]
+
+[resource]
+albedo_texture = ExtResource("1_eye")
+roughness = 0.1
+metallic = 0.2
+emission_enabled = true
+emission_energy_multiplier = 2.8
+emission_texture = ExtResource("1_eye")
+texture_filter = 5

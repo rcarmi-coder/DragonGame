@@ -1,0 +1,674 @@
+/* ==========================================================
+   DRAGON FURY - ESTILOS PLAYSTATION MINIMALISTAS Y CINEMATOGRÁFICOS
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;600;800&display=swap');
+
+:root {
+  --ps-blue: #0070d1;
+  --ps-light-blue: #2de2e6;
+  --ps-gold: #ffb800;
+  --fire-color: #ff4500;
+  --ice-color: #00e5ff;
+  --water-color: #1e90ff;
+  --plant-color: #39ff14;
+  --bg-dark: rgba(10, 12, 18, 0.85);
+  --border-glow: rgba(255, 255, 255, 0.15);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #050608;
+  font-family: 'Montserrat', sans-serif;
+  color: #ffffff;
+}
+
+#game-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#webgl-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ==========================================================
+   PANTALLAS DE SUPERPOSICIÓN (TÍTULO Y FIN DE PARTIDA)
+   ========================================================== */
+.overlay-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, rgba(15, 20, 30, 0.9) 0%, rgba(5, 7, 10, 0.98) 100%);
+  backdrop-filter: blur(12px);
+  z-index: 100;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.overlay-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.title-content {
+  text-align: center;
+  max-width: 900px;
+  padding: 30px;
+}
+
+.game-logo {
+  font-family: 'Cinzel', serif;
+  font-size: 5rem;
+  letter-spacing: 0.4rem;
+  background: linear-gradient(180deg, #ffffff 0%, #ffaa40 50%, #ff3b00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 25px rgba(255, 80, 0, 0.6));
+  margin-bottom: 5px;
+}
+
+.game-subtitle {
+  font-size: 1.1rem;
+  letter-spacing: 0.5rem;
+  color: #aaa;
+  margin-bottom: 35px;
+  font-weight: 600;
+}
+
+.dragon-selection {
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  margin-bottom: 35px;
+}
+
+.dragon-card {
+  flex: 1;
+  max-width: 380px;
+  background: rgba(20, 25, 35, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.dragon-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 180, 0, 0.6);
+  box-shadow: 0 10px 30px rgba(255, 100, 0, 0.25);
+}
+
+.dragon-card.selected {
+  border-color: #ff7700;
+  background: rgba(35, 20, 15, 0.85);
+  box-shadow: 0 0 35px rgba(255, 100, 0, 0.45);
+}
+
+.dragon-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(255, 120, 0, 0.2);
+  color: #ffaa55;
+  margin-bottom: 12px;
+}
+
+.dragon-card h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.dragon-desc {
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: #bbb;
+  margin-bottom: 18px;
+}
+
+.stat-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 0.8rem;
+}
+
+.stat-label {
+  width: 80px;
+  color: #888;
+}
+
+.stat-bar .stat-fill {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #ff7700, #ffbb00);
+  box-shadow: 0 0 10px rgba(255, 150, 0, 0.5);
+}
+
+/* Botones PlayStation */
+.ps-button {
+  background: linear-gradient(135deg, #0070d1 0%, #00458a 100%);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 16px 45px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.15rem;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(0, 112, 209, 0.5);
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ps-button:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 35px rgba(0, 140, 255, 0.8);
+  background: linear-gradient(135deg, #0088ff 0%, #005bb5 100%);
+}
+
+.ps-icon-cross {
+  color: #2de2e6;
+  font-weight: 900;
+}
+
+.controls-hint {
+  margin-top: 15px;
+  font-size: 0.85rem;
+  color: #8899aa;
+}
+
+/* ==========================================================
+   HUD PLAYSTATION MINIMALISTA (EN JUEGO)
+   ========================================================== */
+.hud-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 50;
+  padding: 24px;
+}
+
+.hud-container.hidden {
+  display: none;
+}
+
+/* Superior Izquierda */
+.hud-top-left {
+  position: absolute;
+  top: 25px;
+  left: 30px;
+  width: 320px;
+}
+
+.dragon-name-display {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+#hud-dragon-name {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem;
+  font-weight: 900;
+  letter-spacing: 0.1rem;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.stage-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #ffaa00;
+  letter-spacing: 0.08rem;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 170, 0, 0.4);
+}
+
+.bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.bar-icon {
+  width: 18px;
+  height: 18px;
+  color: #ff3344;
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.stamina-wrapper .bar-icon {
+  color: #00d0ff;
+}
+
+.bar-track {
+  flex: 1;
+  height: 10px;
+  background: rgba(10, 15, 25, 0.75);
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.8);
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.health-fill {
+  background: linear-gradient(90deg, #ff1a35, #ff5533);
+  box-shadow: 0 0 12px rgba(255, 40, 60, 0.7);
+}
+
+.stamina-fill {
+  background: linear-gradient(90deg, #0099ff, #2de2e6);
+  box-shadow: 0 0 12px rgba(0, 200, 255, 0.7);
+}
+
+.bar-val {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #ddd;
+  min-width: 45px;
+  text-shadow: 0 1px 3px #000;
+}
+
+.score-container {
+  margin-top: 12px;
+  background: rgba(10, 15, 25, 0.6);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+.score-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.score-label {
+  color: #aaa;
+}
+
+.score-val {
+  color: #ffbb00;
+  text-shadow: 0 0 8px rgba(255, 200, 0, 0.6);
+}
+
+.evolution-progress-bar {
+  margin-top: 6px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.evolution-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffbb00, #ffffff);
+  box-shadow: 0 0 8px #ffbb00;
+  transition: width 0.3s ease;
+}
+
+.next-level-hint {
+  font-size: 0.65rem;
+  color: #888;
+  margin-top: 4px;
+}
+
+/* Superior Derecha (Brújula y Jefe) */
+.hud-top-right {
+  position: absolute;
+  top: 25px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.compass-container {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(10, 15, 25, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.compass-dial {
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: #ff3344;
+}
+
+.boss-bar-container {
+  margin-top: 20px;
+  width: 450px;
+  text-align: center;
+  background: rgba(15, 20, 30, 0.8);
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 50, 0, 0.4);
+  box-shadow: 0 0 25px rgba(255, 50, 0, 0.3);
+}
+
+.boss-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  font-weight: 900;
+  letter-spacing: 0.15rem;
+  color: #ff6633;
+  margin-bottom: 6px;
+}
+
+.boss-track {
+  height: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.boss-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff1100, #ff8800);
+  box-shadow: 0 0 15px #ff4400;
+  transition: width 0.25s ease;
+}
+
+/* Inferior Derecha: Rueda de Elementos y Superpoder */
+.hud-bottom-right {
+  position: absolute;
+  bottom: 25px;
+  right: 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.elemental-wheel {
+  display: grid;
+  grid-template-columns: repeat(2, 60px);
+  gap: 10px;
+}
+
+.element-slot {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  background: rgba(15, 20, 30, 0.7);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.element-icon {
+  font-size: 1.4rem;
+}
+
+.element-key {
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #778899;
+}
+
+.element-name {
+  font-size: 0.58rem;
+  font-weight: 800;
+  color: #aaa;
+  margin-top: 2px;
+}
+
+/* Efectos de Elemento Activo */
+.element-slot.active {
+  transform: scale(1.1);
+}
+
+.element-slot.active#slot-fire {
+  border-color: var(--fire-color);
+  box-shadow: 0 0 20px rgba(255, 69, 0, 0.8);
+  background: rgba(40, 15, 10, 0.85);
+}
+
+.element-slot.active#slot-ice {
+  border-color: var(--ice-color);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.8);
+  background: rgba(10, 30, 40, 0.85);
+}
+
+.element-slot.active#slot-water {
+  border-color: var(--water-color);
+  box-shadow: 0 0 20px rgba(30, 144, 255, 0.8);
+  background: rgba(10, 20, 45, 0.85);
+}
+
+.element-slot.active#slot-plants {
+  border-color: var(--plant-color);
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.8);
+  background: rgba(15, 35, 15, 0.85);
+}
+
+/* Orbe de Superpoder */
+.ultimate-orb-wrapper {
+  position: relative;
+  width: 90px;
+  height: 90px;
+}
+
+.ultimate-orb {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #101522 60%, #050810 100%);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.ultimate-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(0deg, #ffaa00, #ff3300);
+  opacity: 0.8;
+  transition: height 0.3s ease;
+}
+
+.ultimate-core {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.ps-icon-triangle {
+  color: #39ff14;
+  font-size: 1.2rem;
+  display: block;
+}
+
+.ultimate-label {
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.05rem;
+  color: #fff;
+}
+
+.ultimate-orb.ready {
+  border-color: #ffea00;
+  animation: pulse-glow 1.2s infinite alternate;
+}
+
+.ultimate-orb.ready .ultimate-fill {
+  height: 100%;
+  background: linear-gradient(0deg, #ff7700, #ffee55);
+}
+
+@keyframes pulse-glow {
+  from { box-shadow: 0 0 15px rgba(255, 200, 0, 0.6); }
+  to { box-shadow: 0 0 35px rgba(255, 230, 0, 1); transform: scale(1.06); }
+}
+
+/* Inferior Izquierda: Ayuda de Controles */
+.hud-bottom-left {
+  position: absolute;
+  bottom: 25px;
+  left: 30px;
+}
+
+.controller-helper {
+  background: rgba(10, 15, 25, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px 14px;
+  border-radius: 8px;
+  backdrop-filter: blur(6px);
+}
+
+.ctrl-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  color: #ccc;
+  margin-bottom: 4px;
+}
+
+.ctrl-row:last-child {
+  margin-bottom: 0;
+}
+
+.ps-btn-badge {
+  font-size: 0.65rem;
+  font-weight: 900;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  min-width: 22px;
+  text-align: center;
+}
+
+.btn-cross { color: #2de2e6; }
+.btn-circle { color: #ff3344; }
+.btn-square { color: #e066ff; }
+.btn-triangle { color: #39ff14; }
+
+/* Banner Cinemático */
+.cinematic-banner {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  background: linear-gradient(90deg, transparent 0%, rgba(20, 25, 40, 0.9) 30%, rgba(20, 25, 40, 0.9) 70%, transparent 100%);
+  padding: 20px 80px;
+  border-top: 2px solid #ffbb00;
+  border-bottom: 2px solid #ffbb00;
+  animation: banner-enter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#banner-title {
+  font-family: 'Cinzel', serif;
+  font-size: 2.2rem;
+  color: #ffbb00;
+  letter-spacing: 0.2rem;
+  text-shadow: 0 0 20px rgba(255, 180, 0, 0.8);
+}
+
+#banner-subtitle {
+  font-size: 1rem;
+  color: #ffffff;
+  letter-spacing: 0.1rem;
+  margin-top: 6px;
+}
+
+@keyframes banner-enter {
+  from { opacity: 0; transform: translate(-50%, -20px) scale(0.9); }
+  to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+
+/* Retícula Central */
+.crosshair-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+}
+
+.crosshair-ring {
+  width: 100%;
+  height: 100%;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+}
+
+.crosshair-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 4px;
+  height: 4px;
+  background: #ff5500;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #ff5500;
+}

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dragon Fury - PlayStation Style Action Game</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <!-- Import map para Three.js y complementos -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.162.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.162.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="game-container">
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- Pantalla de Selección de Dragón e Inicio -->
+    <div id="title-screen" class="overlay-screen active">
+      <div class="title-content">
+        <h1 class="game-logo">DRAGON FURY</h1>
+        <p class="game-subtitle">FURIA ELEMENTAL ANCESTRAL</p>
+
+        <div class="dragon-selection">
+          <div class="dragon-card selected" data-dragon="ignisferus">
+            <div class="dragon-badge">ACORAZADO</div>
+            <h3>IGNISFERUS</h3>
+            <p class="dragon-desc">El Dragón Carmesí de Guerra. Fornido, con escamas de obsidiana y embestidas sísmicas demoledoras.</p>
+            <div class="dragon-stats">
+              <div class="stat-bar"><span class="stat-label">Fuerza</span><div class="stat-fill" style="width: 95%;"></div></div>
+              <div class="stat-bar"><span class="stat-label">Velocidad</span><div class="stat-fill" style="width: 70%;"></div></div>
+              <div class="stat-bar"><span class="stat-label">Resistencia</span><div class="stat-fill" style="width: 90%;"></div></div>
+            </div>
+          </div>
+
+          <div class="dragon-card" data-dragon="zephyron">
+            <div class="dragon-badge">AERODINÁMICO</div>
+            <h3>ZEPHYRON</h3>
+            <p class="dragon-desc">El Draco Sombrío y Esbelto. Ágil, alas de gran envergadura y recarga de poder elemental acelerada.</p>
+            <div class="dragon-stats">
+              <div class="stat-bar"><span class="stat-label">Fuerza</span><div class="stat-fill" style="width: 75%;"></div></div>
+              <div class="stat-bar"><span class="stat-label">Velocidad</span><div class="stat-fill" style="width: 95%;"></div></div>
+              <div class="stat-bar"><span class="stat-label">Agilidad</span><div class="stat-fill" style="width: 95%;"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="start-prompt">
+          <button id="btn-start-game" class="ps-button">
+            <span class="ps-icon-cross">✕</span> COMENZAR JUEGO
+          </button>
+          <p class="controls-hint">Compatible con <strong>Mando de PlayStation (DualSense / DualShock)</strong> y <strong>Teclado + Ratón</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- HUD Estilo PlayStation Minimalista -->
+    <div id="playstation-hud" class="hud-container hidden">
+      <!-- Esquina Superior Izquierda: Barra Curva de Vida y Estamina -->
+      <div class="hud-top-left">
+        <div class="dragon-name-display">
+          <span id="hud-dragon-name">IGNISFERUS</span>
+          <span id="hud-dragon-stage" class="stage-tag">ETAPA: CRÍA FEROZ</span>
+        </div>
+        
+        <!-- Barra de Salud Curva -->
+        <div class="bar-wrapper health-wrapper">
+          <div class="bar-icon"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+          <div class="bar-track">
+            <div id="hud-health-fill" class="bar-fill health-fill" style="width: 100%;"></div>
+          </div>
+          <span id="hud-health-text" class="bar-val">100%</span>
+        </div>
+
+        <!-- Barra de Estamina de Vuelo -->
+        <div class="bar-wrapper stamina-wrapper">
+          <div class="bar-icon"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"/></svg></div>
+          <div class="bar-track">
+            <div id="hud-stamina-fill" class="bar-fill stamina-fill" style="width: 100%;"></div>
+          </div>
+          <span id="hud-stamina-text" class="bar-val">ESTAMINA</span>
+        </div>
+
+        <!-- Contador de Puntos y Nivel de Evolución -->
+        <div class="score-container">
+          <div class="score-item">
+            <span class="score-label">ORBES DE PODER:</span>
+            <span id="hud-score" class="score-val">0</span>
+          </div>
+          <div class="evolution-progress-bar">
+            <div id="hud-evolution-fill" class="evolution-fill" style="width: 0%;"></div>
+          </div>
+          <div class="next-level-hint">Próxima Evolución: <span id="hud-next-evo-pts">500 pts</span></div>
+        </div>
+      </div>
+
+      <!-- Esquina Superior Derecha: Brújula y Radar de Objetivos -->
+      <div class="hud-top-right">
+        <div class="compass-container">
+          <div id="hud-compass" class="compass-dial">N</div>
+        </div>
+        <div id="boss-health-bar" class="boss-bar-container hidden">
+          <div class="boss-title">GRAN TITÁN DE LOS ELEMENTOS</div>
+          <div class="boss-track">
+            <div id="boss-health-fill" class="boss-fill" style="width: 100%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Esquina Inferior Derecha: Rueda de 4 Elementos y Orbe de Superpoder -->
+      <div class="hud-bottom-right">
+        <!-- Rueda de Elementos Estilo PlayStation -->
+        <div class="elemental-wheel">
+          <div class="element-slot active" data-element="fire" id="slot-fire">
+            <span class="element-key">▲</span>
+            <span class="element-icon">🔥</span>
+            <span class="element-name">FUEGO</span>
+          </div>
+          <div class="element-slot" data-element="ice" id="slot-ice">
+            <span class="element-key">►</span>
+            <span class="element-icon">❄️</span>
+            <span class="element-name">HIELO</span>
+          </div>
+          <div class="element-slot" data-element="water" id="slot-water">
+            <span class="element-key">◄</span>
+            <span class="element-icon">💧</span>
+            <span class="element-name">AGUA</span>
+          </div>
+          <div class="element-slot" data-element="plants" id="slot-plants">
+            <span class="element-key">▼</span>
+            <span class="element-icon">🌿</span>
+            <span class="element-name">PLANTAS</span>
+          </div>
+        </div>
+
+        <!-- Esfera de Carga del Superpoder Definitivo -->
+        <div class="ultimate-orb-wrapper">
+          <div id="ultimate-orb" class="ultimate-orb">
+            <div id="ultimate-fill" class="ultimate-fill"></div>
+            <div class="ultimate-core">
+              <span class="ps-icon-triangle">▲</span>
+              <span class="ultimate-label">SUPERPODER</span>
+            </div>
+          </div>
+          <div class="ultimate-glow"></div>
+        </div>
+      </div>
+
+      <!-- Esquina Inferior Izquierda: Leyenda de Botones PlayStation -->
+      <div class="hud-bottom-left">
+        <div class="controller-helper">
+          <div class="ctrl-row"><span class="ps-btn-badge btn-cross">✕</span> Aletear / Ascender (Espacio)</div>
+          <div class="ctrl-row"><span class="ps-btn-badge btn-r2">R2</span> Acelerar / Picada (Shift)</div>
+          <div class="ctrl-row"><span class="ps-btn-badge btn-square">■</span> Aliento Elemental (Click Izq)</div>
+          <div class="ctrl-row"><span class="ps-btn-badge btn-circle">●</span> Proyectil Explosivo (Click Der)</div>
+          <div class="ctrl-row"><span class="ps-btn-badge btn-triangle">▲</span> Superpoder (F / Q)</div>
+          <div class="ctrl-row"><span class="ps-btn-badge btn-bumper">L1 / R1</span> Tonel Evasivo (A / D)</div>
+        </div>
+      </div>
+
+      <!-- Notificaciones Cinemáticas Flotantes (Evolución, Destrucción, Superpoderes) -->
+      <div id="cinematic-banner" class="cinematic-banner hidden">
+        <h2 id="banner-title">¡METAMORFOSIS DRACÓNICA!</h2>
+        <p id="banner-subtitle">Tu dragón ha evolucionado a DRAGÓN JOVEN</p>
+      </div>
+
+      <!-- Retícula / Mira Dinámica -->
+      <div class="crosshair-container">
+        <div class="crosshair-ring"></div>
+        <div class="crosshair-dot"></div>
+      </div>
+    </div>
+
+    <!-- Pantalla de Muerte / Victoria -->
+    <div id="game-over-screen" class="overlay-screen hidden">
+      <div class="game-over-content">
+        <h1 id="end-title" class="game-over-title">HAS CAÍDO EN COMBATE</h1>
+        <p id="end-subtitle">Los caballeros han contenido la furia del dragón</p>
+        <button id="btn-restart" class="ps-button">
+          <span class="ps-icon-cross">✕</span> REINTENTAR
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script principal del juego -->
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://cbossdragon01sc"]
+
+[ext_resource type="Script" path="res://scripts/boss_dragon.gd" id="1_boss"]
+[ext_resource type="PackedScene" path="res://models/sculpted_dragon.glb" id="2_model"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_boss"]
+radius = 8.0
+height = 30.0
+
+[node name="BossDragon" type="CharacterBody3D" groups=["bosses", "enemies"]]
+script = ExtResource("1_boss")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_boss")
+
+[node name="SculptedModel" parent="." instance=ExtResource("2_model")]
+transform = Transform3D(-0.65, 0, 0, 0, 0.65, 0, 0, 0, -0.65, 0, -1.2, 0)
+
+[node name="AuraLight" type="OmniLight3D" parent="."]
+light_color = Color(0.95, 0.35, 0.1, 1)
+light_energy = 8.0
+omni_range = 70.0

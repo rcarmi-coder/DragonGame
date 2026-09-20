@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://cbwingpbr01"]
+
+[ext_resource type="Texture2D" path="res://textures/dragon_wing.jpg" id="1_wing"]
+
+[resource]
+cull_mode = 0
+albedo_texture = ExtResource("1_wing")
+roughness = 0.55
+metallic = 0.1
+rim_enabled = true
+rim = 1.0
+rim_tint = 0.3
+subsurf_scatter_enabled = true
+subsurf_scatter_strength = 0.4
+uv1_scale = Vector3(2, 2, 2)
+texture_filter = 5
